@@ -1,0 +1,10 @@
+# mengabaikan folder atau file pilihan pada landing_page
+landing_page/node_modules
+landing_page/*.gitignore
+landing_page/package-lock.json
+
+# mengabaikan nodemodules pada server
+server/node_modules
+server/package-lock.json
+server/request.rest
+server/*.env
