@@ -1,4 +1,6 @@
 import Yoghurt from '../models/Yoghurt.js'
+import fs from 'fs'
+import path from 'path'
 
 const YoghurtController = {
 
@@ -12,7 +14,7 @@ const YoghurtController = {
         } else if (img.size >= 2000000) {
             res.status(422).json({ message: "Ukuran gambar max 2mb" })
             return false
-        } else if (img.mimetype !== 'image/png' || img.mimetype !== 'image/jpg' || img.mimetype !== 'image/jpeg') {
+        } else if (!img.mimetype === 'image/png' || !img.mimetype === 'image/jpg' || !img.mimetype === 'image/jpeg') {
             res.status(422).json({ message: "Format gambar tidak didukung!, Isi data yang benar" })
             return false
         }
@@ -75,15 +77,40 @@ const YoghurtController = {
             url = _dataID.url
         } else {
             if (img.size >= 2000000) {
-                res.status(422).json({message: "Gambar max 2mb"})
+                res.status(422).json({ message: "Gambar max 2mb" })
                 return false
             }
-            if (img.mimetype !== 'image/png' ||img.mimetype !== 'image/jpg' || img.mimetype !== 'image/jpeg') {
-                res.status(422).json({message: "Format gambar tidak didukung!"})
+            if (!img.mimetype === 'image/png' || !img.mimetype === 'image/jpg' || !img.mimetype === 'image/jpeg') {
+                res.status(422).json({ message: "Format gambar tidak didukung!" })
                 return false
             }
 
+            fs.access('public/images/', fs.constants.F_OK, err => {
+                if (!err) {
+                    if (mimetype === 'image/png' || mimetype === 'image/jpg' || mimetype === 'image/jpeg') {
+                        const [...et] = img.mimetype.split('/')
+                        const [...ex] = img.originalname.split('.')
+
+                        const mimetypeExt = et.pop()
+                        const originalNameExt = ex.pop()
+
+                        fs.readdir('public/images/', (err, files) => {
+                            if (err) throw err
+                            for (const file of files) {
+                                if (path.extname(file) === `.${mimetypeExt}` || path.extname(file) === `.${originalNameExt}`) {
+                                    fs.unlink(path.join(`public/images/`, file), err => {
+                                        if (err) throw err
+                                        console.log(`Gambar lama terhapus, update gambar berhasil!`)
+                                    })
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+
             try {
+
                 const update = await Yoghurt.updateOne(
                     _dataID,
                     {
@@ -103,7 +130,7 @@ const YoghurtController = {
                 )
                 res.status(200).json(update)
             } catch (error) {
-                res.status(500).json({message: error.message})
+                res.status(500).json({ message: error.message })
             }
         }
     },
@@ -121,7 +148,10 @@ const YoghurtController = {
         try {
             const _dataID = await Yoghurt.findById(req.params.id)
             const { image: { data, originalName, ContentType } } = _dataID
-            res.json(originalName)
+            fs.access(`/public/images/${_dataID.image.originalName}`, fs.constants.F_OK, err => {
+                err ? console.log(`FIle tidak ada`) : console.log(`ada bro!!!`)
+            })
+            res.json(_dataID)
         } catch (error) {
 
         }
