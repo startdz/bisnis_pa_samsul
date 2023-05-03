@@ -1,6 +1,8 @@
 import Yoghurt from '../models/Yoghurt.js'
 import fs from 'fs'
-import path from 'path'
+import path, { join } from 'path'
+import Upload from '../middlewares/Images.js'
+import md5 from 'md5'
 
 const YoghurtController = {
 
@@ -59,80 +61,60 @@ const YoghurtController = {
 
     updateYoghurt: async (req, res, next) => {
 
+        const yoID = await Yoghurt.findById(req.params.id)
+        const { originalName, ContentType } = yoID.image
+        const { price, stock, url, title } = yoID
+
         const img = req.file
-
-        const _dataID = await Yoghurt.findById(req.params.id)
-        const { image: { data, originalName, ContentType, createdAt } } = _dataID
-
-        let image = {
-            data: {},
-            originalName: '',
-            ContentType: '',
-            createdAt: {}
-        }
-        let url = ''
+        const newFileUploaded = img.originalname
+        const [...ex] = newFileUploaded.split('.')
+        const changedNameFile = `${md5(ex[0])}.${ex.pop()}`
 
         if (!img) {
-            image = { data, originalName, ContentType, createdAt }
-            url = _dataID.url
-        } else {
-            if (img.size >= 2000000) {
-                res.status(422).json({ message: "Gambar max 2mb" })
-                return false
-            }
-            if (!img.mimetype === 'image/png' || !img.mimetype === 'image/jpg' || !img.mimetype === 'image/jpeg') {
-                res.status(422).json({ message: "Format gambar tidak didukung!" })
-                return false
-            }
+            res.status(422).json({message: 'Tidak ada gambar yang di upload'})
+            return false
+        } else if (img.size >= 2000000) {
+            res.status(422).json({message: 'Gambar tidak bisa melebihi ukuran 2mb'})
+            return false
+        } else if (!img.mimetype === 'image/jpg' ||!img.mimetype === 'image/png' || !img.mimetype === 'image/jpeg') {
+            res.status(422).json({message: 'Format gambar tidak didukung!'})
+            return false
+        }
 
+        if (img) {
             fs.access('public/images/', fs.constants.F_OK, err => {
                 if (!err) {
-                    if (mimetype === 'image/png' || mimetype === 'image/jpg' || mimetype === 'image/jpeg') {
-                        const [...et] = img.mimetype.split('/')
-                        const [...ex] = img.originalname.split('.')
-
-                        const mimetypeExt = et.pop()
-                        const originalNameExt = ex.pop()
-
-                        fs.readdir('public/images/', (err, files) => {
-                            if (err) throw err
-                            for (const file of files) {
-                                if (path.extname(file) === `.${mimetypeExt}` || path.extname(file) === `.${originalNameExt}`) {
-                                    fs.unlink(path.join(`public/images/`, file), err => {
-                                        if (err) throw err
-                                        console.log(`Gambar lama terhapus, update gambar berhasil!`)
-                                    })
-                                }
-                            }
-                        })
-                    }
+                    fs.unlink(`public/images/${originalName}`, err => {
+                        if (err) throw err
+                        console.log(`Gambar lama berhasil di update`)
+                    })
                 }
             })
-
-            try {
-
-                const update = await Yoghurt.updateOne(
-                    _dataID,
-                    {
-                        $set: {
-                            title: req.body.title,
-                            description: req.body.description,
-                            image: {
-                                data: img.encoding,
-                                originalName: img.filename,
-                                ContentType: img.mimetype
-                            },
-                            url: `${req.protocol}://${req.get("host")}/images/${img.filename}`,
-                            price: req.body.price,
-                            stock: req.body.stock
-                        }
-                    }
-                )
-                res.status(200).json(update)
-            } catch (error) {
-                res.status(500).json({ message: error.message })
-            }
         }
+
+        try {
+            const update = await Yoghurt.updateOne(
+                yoID,
+                {
+                    $set: {
+                        title: req.params.title,
+                        description: req.params.description,
+                        image: {
+                            data: img.fieldname,
+                            originalName: changedNameFile,
+                            ContentType: img.mimetype
+                        },
+                        url: `${req.protocol}://${req.get("host")}/images/${changedNameFile}`,
+                        price: req.body.price,
+                        stock: req.body.stock
+                    }
+                }
+            )
+            res.status(200).json(update)
+        } catch (error) {
+            res.status(500).json({message: error.message})
+        }
+
     },
 
     /**
@@ -146,11 +128,26 @@ const YoghurtController = {
 
     getDebugYoghurt: async (req, res, next) => {
         try {
-            const _dataID = await Yoghurt.findById(req.params.id)
-            const { image: { data, originalName, ContentType } } = _dataID
-            fs.access(`/public/images/${_dataID.image.originalName}`, fs.constants.F_OK, err => {
-                err ? console.log(`FIle tidak ada`) : console.log(`ada bro!!!`)
-            })
+            // const _dataID = await Yoghurt.findById(req.params.id)
+            const FindOne = await Yoghurt.findOne({ _id: req.params.id })
+            res.status(200).json(FindOne)
+            // console.log(first)
+            // const { image: { data, originalName, ContentType } } = _dataID
+            // console.log(originalName)
+
+            // fs.readdir('public/images/', (err, file) => {
+            //     err ? console.log(`file ga ada bro`) : console.log(file)
+            //     const [...results] = file
+            //     const fileInLocal = results.includes(originalName)
+            //     console.log(fileInLocal)    
+            // })
+            // // hasil dari fs.readdir
+            // /*[ 
+            //     '30f9a59a4d7782fd2b9fece50e377a9c.jpg',
+            //     'c7afebb736c2ca4b46d92d639ec687a9.jpg'
+            // ]
+            // */
+
             res.json(_dataID)
         } catch (error) {
 

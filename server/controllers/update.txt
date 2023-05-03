@@ -1,0 +1,67 @@
+const img = req.file
+
+        const _dataID = await Yoghurt.findById(req.params.id)
+        const { image: { data, originalName, ContentType } } = _dataID
+
+let image = {
+            data: {},
+            originalName: '',
+            ContentType: '',
+        }
+        let url = ''
+
+        if (!img) {
+            image.data = data
+            image.originalName = originalName
+            image.ContentType = ContentType
+            url = _dataID.url
+            Upload.single('image') ? true : false
+            // res.status(422).json({message: "Gambar baru harus di upload!"})
+            // return false
+            // image = { data, originalName, ContentType }
+            // url = _dataID.url
+        } else {
+            
+            if (img.size >= 2000000) {
+                res.status(422).json({ message: "Gambar max 2mb" })
+                return false
+            }
+            if (!img.mimetype === 'image/png' || !img.mimetype === 'image/jpg' || !img.mimetype === 'image/jpeg') {
+                res.status(422).json({ message: "Format gambar tidak didukung!" })
+                return false
+            }
+
+            try {
+
+                fs.access('public/images', fs.constants.F_OK, err => {
+                    if (!err) {
+                        if (originalName) {
+                            fs.unlink(`public/images/${originalName}`, err => {
+                                err ? console.log(`Update gambar gagal!`) : console.log(`Update gambar berhasil`)
+                            })
+                        }
+                    }
+                })
+
+                const update = await Yoghurt.updateOne(
+                    _dataID,
+                    {
+                        $set: {
+                            title: req.body.title,
+                            description: req.body.description,
+                            image: {
+                                data: img.encoding,
+                                originalName: img.filename,
+                                ContentType: img.mimetype
+                            },
+                            url: `${req.protocol}://${req.get("host")}/images/${img.filename}`,
+                            price: req.body.price,
+                            stock: req.body.stock
+                        }
+                    }
+                )
+                res.status(200).json(update)
+            } catch (error) {
+                res.status(500).json({ message: error.message })
+            }
+        }
