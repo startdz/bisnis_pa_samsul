@@ -62,24 +62,34 @@ const YoghurtController = {
     updateYoghurt: async (req, res, next) => {
 
         const yoID = await Yoghurt.findById(req.params.id)
-        const { originalName, ContentType } = yoID.image
-        const { price, stock, url, title } = yoID
+        const { originalName, ContentType, data } = yoID.image
+        const { title, url, description, price, stock } = yoID
 
         const img = req.file
-        const newFileUploaded = img.originalname
-        const [...ex] = newFileUploaded.split('.')
-        const changedNameFile = `${md5(ex[0])}.${ex.pop()}`
+
+        let Olddata = {}
+        let OldoriginalName = ''
+        let OldContentType = ''
+        let Oldurl = ''
 
         if (!img) {
-            res.status(422).json({message: 'Tidak ada gambar yang di upload'})
-            return false
+            Olddata = data
+            OldoriginalName = originalName
+            OldContentType = ContentType
+            Oldurl = url
+            res.status(422).json({ message: 'Gambar lama tidak dirubah!' })
+            return true
         } else if (img.size >= 2000000) {
-            res.status(422).json({message: 'Gambar tidak bisa melebihi ukuran 2mb'})
+            res.status(422).json({ message: 'Gambar tidak bisa melebihi ukuran 2mb' })
             return false
-        } else if (!img.mimetype === 'image/jpg' ||!img.mimetype === 'image/png' || !img.mimetype === 'image/jpeg') {
-            res.status(422).json({message: 'Format gambar tidak didukung!'})
+        } else if (!img.mimetype === 'image/jpg' || !img.mimetype === 'image/png' || !img.mimetype === 'image/jpeg') {
+            res.status(422).json({ message: 'Format gambar tidak didukung!' })
             return false
         }
+
+        const { originalname } = img
+        const [...ex] = originalname.split('.')
+        const changedNameFile = `${md5(ex[0])}.${ex.pop()}`
 
         if (img) {
             fs.access('public/images/', fs.constants.F_OK, err => {
@@ -97,22 +107,22 @@ const YoghurtController = {
                 yoID,
                 {
                     $set: {
-                        title: req.params.title,
-                        description: req.params.description,
+                        title: req.params.title || title,
+                        description: req.params.description || description,
                         image: {
-                            data: img.fieldname,
-                            originalName: changedNameFile,
-                            ContentType: img.mimetype
+                            data: img.fieldname || Olddata,
+                            originalName: changedNameFile || OldoriginalName,
+                            ContentType: img.mimetype || OldContentType
                         },
-                        url: `${req.protocol}://${req.get("host")}/images/${changedNameFile}`,
-                        price: req.body.price,
-                        stock: req.body.stock
+                        url: `${req.protocol}://${req.get("host")}/images/${changedNameFile}` || Oldurl,
+                        price: req.body.price || price,
+                        stock: req.body.stock || stock
                     }
                 }
             )
             res.status(200).json(update)
         } catch (error) {
-            res.status(500).json({message: error.message})
+            res.status(500).json({ message: error.message })
         }
 
     },
@@ -157,7 +167,7 @@ const YoghurtController = {
     postDebugYoghurt: async (req, res, next) => {
         try {
             const _postDebugImage = req.file
-            console.log(_postDebugImage)
+            console.log(_postDebugImage.originalname)
         } catch (error) {
 
         }
