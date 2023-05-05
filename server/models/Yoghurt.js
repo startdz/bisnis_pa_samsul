@@ -6,29 +6,29 @@ const {Schema, model} = mongoose
 const yoghurtSchema = Schema({
     title: {
         type: String,
-        required: false
+        required: true
     },
     description: {
         type: String,
-        required: false
+        required: true
     },
     image: {
         data: Buffer,
         originalName: String,
         ContentType: String,
-        createdAt: {type: Date, default: Date.now()}
+        createdAt: {type: Date, default: Date.now()},
     },
     url: {
         type: String,
-        required: false
+        required: true
     },
     price: {
         type: Number,
-        required: false
+        required: true
     },
     stock: {
         type: Number,
-        required: false
+        required: true
     }
 })
 

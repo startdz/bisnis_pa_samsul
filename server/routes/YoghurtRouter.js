@@ -12,6 +12,8 @@ router.post('/api/product/yoghurt/', Upload.single('image'), YoghurtController.c
 router.put('/api/product/yoghurt/:id', Upload.single('image'), YoghurtController.updateYoghurt)
 // //get
 router.get('/api/product/yoghurt/:id', YoghurtController.getYoghurt)
+//delete
+router.delete('/api/product/yoghurt/:id', YoghurtController.removeYoghurt)
 
 // /**
 //  * Debugger

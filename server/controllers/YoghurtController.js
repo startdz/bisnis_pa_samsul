@@ -62,27 +62,19 @@ const YoghurtController = {
     updateYoghurt: async (req, res, next) => {
 
         const yoID = await Yoghurt.findById(req.params.id)
-        const { originalName, ContentType, data } = yoID.image
-        const { title, url, description, price, stock } = yoID
+        const { originalName } = yoID.image
 
         const img = req.file
 
-        let Olddata = {}
-        let OldoriginalName = ''
-        let OldContentType = ''
-        let Oldurl = ''
-
         if (!img) {
-            Olddata = data
-            OldoriginalName = originalName
-            OldContentType = ContentType
-            Oldurl = url
-            res.status(422).json({ message: 'Gambar lama tidak dirubah!' })
-            return true
-        } else if (img.size >= 2000000) {
+            res.status(422).json({ message: 'Tidak ada gambar yang di upload!' })
+            return false
+        }
+        if (img.size >= 2000000) {
             res.status(422).json({ message: 'Gambar tidak bisa melebihi ukuran 2mb' })
             return false
-        } else if (!img.mimetype === 'image/jpg' || !img.mimetype === 'image/png' || !img.mimetype === 'image/jpeg') {
+        }
+        if (!img.mimetype === 'image/jpg' || !img.mimetype === 'image/png' || !img.mimetype === 'image/jpeg') {
             res.status(422).json({ message: 'Format gambar tidak didukung!' })
             return false
         }
@@ -107,16 +99,16 @@ const YoghurtController = {
                 yoID,
                 {
                     $set: {
-                        title: req.params.title || title,
-                        description: req.params.description || description,
+                        title: req.body.title,
+                        description: req.body.description,
                         image: {
-                            data: img.fieldname || Olddata,
-                            originalName: changedNameFile || OldoriginalName,
-                            ContentType: img.mimetype || OldContentType
+                            data: img.fieldname,
+                            originalName: changedNameFile,
+                            ContentType: img.mimetype
                         },
-                        url: `${req.protocol}://${req.get("host")}/images/${changedNameFile}` || Oldurl,
-                        price: req.body.price || price,
-                        stock: req.body.stock || stock
+                        url: `${req.protocol}://${req.get("host")}/images/${changedNameFile}`,
+                        price: req.body.price,
+                        stock: req.body.stock
                     }
                 }
             )
@@ -125,6 +117,26 @@ const YoghurtController = {
             res.status(500).json({ message: error.message })
         }
 
+    },
+
+    removeYoghurt: async (req, res, next) => {
+        try {
+            const yoghurt = await Yoghurt.findById(req.params.id)
+            const {originalName} = yoghurt.image
+
+            fs.access('public/images/', fs.constants.F_OK, err => {
+                if (!err) {
+                    fs.unlink(`public/images/${originalName}`, err => {
+                        if (err) throw err
+                        console.log(`Gambar berhasil dihapus!`)
+                    })
+                }
+            })
+            const drop = await Yoghurt.deleteOne({_id:req.params.id})
+            res.status(200).json(drop)
+        } catch (error) {
+            res.status(400).json({message: error.message})
+        }
     },
 
     /**
