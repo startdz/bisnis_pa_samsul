@@ -1,7 +1,5 @@
 import Yoghurt from '../models/Yoghurt.js'
 import fs from 'fs'
-import path, { join } from 'path'
-import Upload from '../middlewares/Images.js'
 import md5 from 'md5'
 
 const YoghurtController = {

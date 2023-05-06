@@ -6,16 +6,22 @@ const promoSchema = Schema({
         type: String,
         required: true
     },
-    image: {
+    description: {
         type: String,
         required: true
+    },
+    image: {
+        data: Buffer,
+        originalName: String,
+        ContentType: String,
+        createdAt: {type: Date, default: Date.now()},
     },
     url: {
         type: String,
         required: true
     },
-    description: {
-        type: Text,
+    price: {
+        type: Number,
         required: true
     },
     stock: {
