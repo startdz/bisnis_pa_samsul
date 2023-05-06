@@ -42,7 +42,7 @@ const PromoController = {
         try {
             const create = new Promo({
                 title: req.body.title,
-                description: req.body.title,
+                description: req.body.description,
                 image: {
                     data: img.encoding,
                     originalName: img.filename,
@@ -93,23 +93,19 @@ const PromoController = {
         }
 
         try {
-            const update = await Promo.updateOne(
-                promo,
-                {
-                    $set: {
-                        title: req.body.title,
-                        description: req.body.description,
-                        image: {
-                            data: img.fieldname,
-                            originalName: changedNameFile,
-                            ContentType: img.mimetype
-                        },
-                        url: `${req.protocol}://${req.get("host")}/images/${changedNameFile}`,
-                        price: req.body.price,
-                        stock: req.body.stock
-                    }
-                }
-            )
+            const update = await Promo.findByIdAndUpdate(req.params.id, {
+                title: req.body.title,
+                description: req.body.description,
+                image: {
+                    data: img.fieldname,
+                    originalName: changedNameFile,
+                    ContentType: img.mimetype
+                },
+                url: `${req.protocol}://${req.get("host")}/images/${changedNameFile}`,
+                price: req.body.price,
+                stock: req.body.stock
+            },
+            {new: true})
             res.status(200).json(update)
         } catch (error) {
             res.status(500).json({message: error.message})
