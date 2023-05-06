@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const { Schema, model } = mongoose
 
 const contactSchema = Schema({
-    nameOfSosmed: {
+    sosmed: {
         type: String,
         required: true
     },
@@ -11,8 +11,9 @@ const contactSchema = Schema({
         required: true
     },
     image: {
-        type: String,
-        required: true
+        data: Buffer,
+        originalName: String,
+        ContentType: String
     },
     url: {
         type: String,
