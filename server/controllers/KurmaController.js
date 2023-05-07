@@ -78,18 +78,17 @@ const KurmaController = {
       return false;
     }
 
-    if (img) {
-      fs.access("public/images", fs.constants.F_OK, (err) => {
-        if (!err) {
-          fs.unlink(`public/access/${originalName}`, (err) => {
-            err && new Error("Gambar Kurma gagal di update!");
-            console.log(`Gambar berhasil di update!`);
-          });
-        }
-      });
-    }
+    fs.access("public/images/", fs.constants.F_OK, (err) => {
+      if (!err) {
+        fs.unlink(`public/images/${originalName}`, (err) => {
+          err && new Error("Gambar Kurma gagal di update!");
+          console.log(`Gambar berhasil di update!`);
+        });
+      }
+    });
 
-    const [...ex] = img.originalname;
+    const { originalname } = img;
+    const [...ex] = originalname.split(".");
     const updatedImage = `${md5(ex[0])}.${ex.pop()}`;
 
     try {
@@ -117,13 +116,12 @@ const KurmaController = {
   removeKurma: async (req, res, next) => {
     try {
       const kurma = await Kurma.findById(req.params.id);
-      fs.access("public/images", fs.constants.F_OK, (err) => {
+      const { originalName } = kurma.image;
+      fs.access("public/images/", fs.constants.F_OK, (err) => {
         if (!err) {
-          fs.unlink(`public/images/${kurma.images.originalName}`, (err) => {
+          fs.unlink(`public/images/${originalName}`, (err) => {
             err && new Error("Gambar gagal terhapus!");
-            console.log(
-              `Gambar ${kurma.images.originalName} berhasil terhapus`
-            );
+            console.log(`Gambar ${originalName} berhasil terhapus`);
           });
         }
       });
