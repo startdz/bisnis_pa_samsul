@@ -9,12 +9,16 @@ import {
   PromoRouter,
   YoghurtRouter,
 } from "./routes/routing.js";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+dotenv.config();
 
 const app = express();
 const port = 5000;
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:5173/" }));
 app.use(express.json());
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
