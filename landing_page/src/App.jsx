@@ -1,8 +1,18 @@
 import React from 'react'
+import {Routes, Route} from 'react-router-dom'
+import Register from './components/Form/Admin/Register'
+import Login from './components/Form/Admin/Login'
+import Dashboard from './components/Page/Admin/Dashboard'
 
 const App = () => {
   return (
-    <div>App</div>
+    <React.Fragment>
+      <Routes>
+        <Route path='/auth/register' element={<Register/>}/>
+        <Route path='/auth/login' element={<Login/>}/>
+        <Route path='/project/admin/dashboard' element={<Dashboard/>}/>
+      </Routes>
+    </React.Fragment>
   )
 }
 

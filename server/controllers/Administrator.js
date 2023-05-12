@@ -28,7 +28,9 @@ const Administrator = {
   },
   login: async (req, res, next) => {
     try {
-      const admin = await Admin.findOne({ email: req.body.email });
+      const admin = await Admin.findOne({
+        email: req.body.email,
+      });
       if (!admin) {
         res.status(404).json({ message: "Email tidak ditemukan!" });
         return false;
