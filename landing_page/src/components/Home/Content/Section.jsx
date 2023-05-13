@@ -20,9 +20,18 @@ const Section = () => {
                             <img src={y3} alt="Album" />
                         </figure>
                         <div className="card-body">
-                            <h2 className="card-title">New album is released!</h2>
-                            <p>Click the button to listen on Spotiwhy app.</p>
-                            <div className="rating">
+                            <h2 className="card-title">Yoghurt Populer!</h2>
+                            <p>Yoghurt Model Cups.</p>
+                            <div className="stats shadow">
+
+                                <div className="stat">
+                                    <div className="stat-title">Yoghurt Laris</div>
+                                    <div className="stat-value">Rp 19,900</div>
+                                    <div className="stat-desc">Hemat 18%</div>
+                                </div>
+
+                            </div>
+                            <div className="rating flex justify-end">
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
@@ -30,7 +39,7 @@ const Section = () => {
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
                             </div>
                             <div className="card-actions justify-end">
-                                <button className="btn btn-primary">Listen</button>
+                                <button className="btn btn-primary">Selengkapnya</button>
                             </div>
                         </div>
                     </div>
@@ -42,9 +51,18 @@ const Section = () => {
                             <img src={y4} alt="Album" className="" />
                         </figure>
                         <div className="card-body">
-                            <h2 className="card-title">New album is released!</h2>
-                            <p>Click the button to listen on Spotiwhy app.</p>
-                            <div className="rating">
+                            <h2 className="card-title">Yoghurt Premium!</h2>
+                            <p>Yoghurt Bucket & Varian rasa.</p>
+                            <div className="stats shadow">
+
+                                <div className="stat">
+                                    <div className="stat-title">Paket Premium</div>
+                                    <div className="stat-value">24,900</div>
+                                    <div className="stat-desc">Hemat 18%</div>
+                                </div>
+
+                            </div>
+                            <div className="rating flex justify-end">
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
@@ -52,7 +70,7 @@ const Section = () => {
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
                             </div>
                             <div className="card-actions justify-end">
-                                <button className="btn btn-primary">Listen</button>
+                                <button className="btn btn-primary">Selengkapnya</button>
                             </div>
                         </div>
                     </div>
@@ -71,9 +89,18 @@ const Section = () => {
                             <img src={k1} alt="Album" />
                         </figure>
                         <div className="card-body">
-                            <h2 className="card-title">New album is released!</h2>
-                            <p>Click the button to listen on Spotiwhy app.</p>
-                            <div className="rating">
+                            <h2 className="card-title">Kurma Populer!</h2>
+                            <p>Kurma manis dengan kesegaran.</p>
+                            <div className="stats shadow">
+
+                                <div className="stat">
+                                    <div className="stat-title">Kurma Laris</div>
+                                    <div className="stat-value">Rp 27,900</div>
+                                    <div className="stat-desc">Hemat 18%</div>
+                                </div>
+
+                            </div>
+                            <div className="rating flex justify-end">
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
@@ -81,7 +108,7 @@ const Section = () => {
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
                             </div>
                             <div className="card-actions justify-end">
-                                <button className="btn btn-primary">Listen</button>
+                                <button className="btn btn-primary">Selengkapnya</button>
                             </div>
                         </div>
                     </div>
@@ -93,9 +120,18 @@ const Section = () => {
                             <img src={k2} alt="Album" className="" />
                         </figure>
                         <div className="card-body">
-                            <h2 className="card-title">New album is released!</h2>
-                            <p>Click the button to listen on Spotiwhy app.</p>
-                            <div className="rating">
+                            <h2 className="card-title">Kurma Premuim!</h2>
+                            <p>Produk Mekkah dan Madinah.</p>
+                            <div className="stats shadow">
+
+                                <div className="stat">
+                                    <div className="stat-title">Kurma Premuim</div>
+                                    <div className="stat-value">Rp 53,900</div>
+                                    <div className="stat-desc">8% lebih murah dari bulan sebelumnya</div>
+                                </div>
+
+                            </div>
+                            <div className="rating flex justify-end">
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
                                 <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" />
