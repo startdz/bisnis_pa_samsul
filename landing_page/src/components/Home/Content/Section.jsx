@@ -17,11 +17,11 @@ const Section = () => {
                 <div className="grid flex-grow h-auto card bg-base-300 rounded-[0] place-items-center py-4 px-2">
                     <div className="card lg:card-side bg-base-100 shadow-xl">
                         <figure>
-                            <img src={y3} alt="Album" />
+                            <img src={y3} alt="Album" className="rounded-tr-md rounded-br-md" />
                         </figure>
                         <div className="card-body">
                             <h2 className="card-title">Yoghurt Populer!</h2>
-                            <p>Yoghurt Model Cups.</p>
+                            <p className="text-sm">Yoghurt Model Cups.</p>
                             <div className="stats shadow">
 
                                 <div className="stat">
@@ -48,16 +48,16 @@ const Section = () => {
                 <div className="grid flex-grow h-auto card bg-base-300 rounded-[0] place-items-center py-4 px-2">
                     <div className="card lg:card-side bg-base-100 shadow-xl">
                         <figure>
-                            <img src={y4} alt="Album" className="" />
+                            <img src={y4} alt="Album" className="rounded-tr-md rounded-br-md" />
                         </figure>
                         <div className="card-body">
                             <h2 className="card-title">Yoghurt Premium!</h2>
-                            <p>Yoghurt Bucket & Varian rasa.</p>
+                            <p className="text-sm">Yoghurt Bucket & Varian rasa.</p>
                             <div className="stats shadow">
 
                                 <div className="stat">
                                     <div className="stat-title">Paket Premium</div>
-                                    <div className="stat-value">24,900</div>
+                                    <div className="stat-value">Rp 24,900</div>
                                     <div className="stat-desc">Hemat 18%</div>
                                 </div>
 
@@ -86,11 +86,11 @@ const Section = () => {
                 <div className="grid flex-grow h-auto card bg-base-300 rounded-[0] place-items-center py-4 px-2">
                     <div className="card lg:card-side bg-base-100 shadow-xl">
                         <figure>
-                            <img src={k1} alt="Album" />
+                            <img src={k1} alt="Album" className="rounded-tr-md rounded-br-md" />
                         </figure>
                         <div className="card-body">
                             <h2 className="card-title">Kurma Populer!</h2>
-                            <p>Kurma manis dengan kesegaran.</p>
+                            <p className="text-sm">Kurma manis dengan kesegaran.</p>
                             <div className="stats shadow">
 
                                 <div className="stat">
@@ -117,11 +117,11 @@ const Section = () => {
                 <div className="grid flex-grow h-auto card bg-base-300 rounded-[0] place-items-center py-4 px-2">
                     <div className="card lg:card-side bg-base-100 shadow-xl">
                         <figure>
-                            <img src={k2} alt="Album" className="" />
+                            <img src={k2} alt="Album" className="rounded-tr-md rounded-br-md" />
                         </figure>
                         <div className="card-body">
                             <h2 className="card-title">Kurma Premuim!</h2>
-                            <p>Produk Mekkah dan Madinah.</p>
+                            <p className="text-sm">Produk Mekkah dan Madinah.</p>
                             <div className="stats shadow">
 
                                 <div className="stat">

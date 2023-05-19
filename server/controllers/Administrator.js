@@ -8,6 +8,7 @@ const Administrator = {
 
     if (password !== secondPassword) {
       res.status(400).json({ message: "Password salah atau tidak cocok!" });
+      console.log(password, secondPassword)
       return false;
     }
 
